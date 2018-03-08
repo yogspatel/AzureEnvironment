@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2036
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "AzureTestEnv", "AzureTestEnv\AzureTestEnv.deployproj", "{074D0D0A-03AB-4040-AF9F-54BFACA9E13F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{074D0D0A-03AB-4040-AF9F-54BFACA9E13F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{074D0D0A-03AB-4040-AF9F-54BFACA9E13F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{074D0D0A-03AB-4040-AF9F-54BFACA9E13F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{074D0D0A-03AB-4040-AF9F-54BFACA9E13F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4699E296-051C-4103-8036-2BC208C394E2}
+	EndGlobalSection
+EndGlobal
