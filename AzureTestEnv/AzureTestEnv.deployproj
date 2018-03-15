@@ -29,8 +29,13 @@
       <Visible>False</Visible>
     </None>
     <Content Include="Deploy-AzureResourceGroup.ps1" />
-    <Content Include="WindowsVirtualMachine.json" />
-    <Content Include="WindowsVirtualMachine.parameters.json" />
+    <Content Include="RG-Test-Network\network.parameters.json" />
+    <Content Include="RG-Test-Application\storage.parameters.json" />
+    <Content Include="Templates\storage.json" />
+    <Content Include="Templates\network.json" />
+    <Content Include="Templates\servers.json" />
+    <Content Include="RG-Test-Application\servers.parameters.json" />
+    <Content Include="packages.config" />
   </ItemGroup>
   <Target Name="GetReferenceAssemblyPaths" />
 </Project>

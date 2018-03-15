@@ -1,0 +1,125 @@
+﻿{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "vmserverName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "vmserverAdminUserName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "vmserverAdminPassword": {
+      "type": "securestring"
+    },
+    "vmserverWindowsOSVersion": {
+      "type": "string",
+      "defaultValue": "2012-R2-Datacenter",
+      "allowedValues": [
+        "2008-R2-SP1",
+        "2012-Datacenter",
+        "2012-R2-Datacenter",
+        "Windows-Server-Technical-Preview"
+      ]
+    },
+    "storageAccountName": {
+      "type": "string",
+      "defaultValue": "storage01test"
+    },
+    "storageAccountResourceGroup": {
+      "type": "string",
+      "defaultValue": "RG-Test-Application"
+    },
+    "virtualNetworkName": {
+      "type": "string",
+      "defaultValue": "Test-Network"
+    },
+    "virtualNetworkResourceGroup": {
+      "type": "string",
+      "defaultValue": "RG-Test-Network"
+    }
+  },
+  "variables": {
+    "vmserverImagePublisher": "MicrosoftWindowsServer",
+    "vmserverImageOffer": "WindowsServer",
+    "vmserverOSDiskName": "vmserverOSDisk",
+    "vmserverVmSize": "Basic_A1",
+    "vmserverVnetID": "[resourceId(parameters('virtualNetworkResourceGroup'), 'Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
+    "vmserverSubnetRef": "[concat(variables('vmserverVnetID'), '/subnets/', 'Servers')]",
+    "vmserverStorageAccountContainerName": "vhds",
+    "vmserverNicName": "[concat(parameters('vmserverName'), 'NetworkInterface')]"
+  },
+  "resources": [
+    {
+      "name": "[variables('vmserverNicName')]",
+      "type": "Microsoft.Network/networkInterfaces",
+      "location": "eastus",
+      "apiVersion": "2016-03-30",
+      "dependsOn": [ ],
+      "tags": {
+        "displayName": "vmserverNic"
+      },
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Dynamic",
+              "subnet": {
+                "id": "[variables('vmserverSubnetRef')]"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "[parameters('vmserverName')]",
+      "type": "Microsoft.Compute/virtualMachines",
+      "location": "eastus",
+      "apiVersion": "2015-06-15",
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/networkInterfaces', variables('vmserverNicName'))]"
+      ],
+      "tags": {
+        "displayName": "vmserver"
+      },
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[variables('vmserverVmSize')]"
+        },
+        "osProfile": {
+          "computerName": "[parameters('vmserverName')]",
+          "adminUsername": "[parameters('vmserverAdminUsername')]",
+          "adminPassword": "[parameters('vmserverAdminPassword')]"
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "[variables('vmserverImagePublisher')]",
+            "offer": "[variables('vmserverImageOffer')]",
+            "sku": "[parameters('vmserverWindowsOSVersion')]",
+            "version": "latest"
+          },
+          "osDisk": {
+            "name": "vmserverOSDisk",
+            "vhd": {
+              "uri": "[concat(reference(resourceId(parameters('storageAccountResourceGroup'), 'Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2016-01-01').primaryEndpoints.blob, variables('vmserverStorageAccountContainerName'), '/', variables('vmserverOSDiskName'), '.vhd')]"
+            },
+            "caching": "ReadWrite",
+            "createOption": "FromImage"
+          }
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('vmserverNicName'))]"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "outputs": {
+  }
+}
