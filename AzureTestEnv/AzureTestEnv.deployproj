@@ -29,6 +29,8 @@
       <Visible>False</Visible>
     </None>
     <Content Include="Deploy-AzureResourceGroup.ps1" />
+    <Content Include="servers.json" />
+    <Content Include="servers.parameters.json" />
     <Content Include="RG-Test-Network\network.parameters.json" />
     <Content Include="RG-Test-Application\storage.parameters.json" />
     <Content Include="Templates\storage.json" />
